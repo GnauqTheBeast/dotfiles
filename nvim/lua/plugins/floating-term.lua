@@ -1,43 +1,51 @@
-local state = { floating = { buf = -1, win = -1 } }
-local function create_floating_window(opts)
-    opts = opts or {}
-    local width = math.floor(vim.o.columns * 0.8)
-    local height = math.floor(vim.o.lines * 0.8)
+return {
+  "nvim-lua/plenary.nvim", 
+  config = function()
+    local state = { floating = { buf = -1, win = -1 } }
 
-    local row = math.floor((vim.o.lines - height) / 2)
-    local col = math.floor((vim.o.columns - width) / 2)
+    local function create_floating_window(opts)
+      opts = opts or {}
+      local width = math.floor(vim.o.columns * 0.8)
+      local height = math.floor(vim.o.lines * 0.8)
 
-    local buf = nil
-    if vim.api.nvim_buf_is_valid(opts.buf) then
+      local row = math.floor((vim.o.lines - height) / 2)
+      local col = math.floor((vim.o.columns - width) / 2)
+
+      local buf
+      if opts.buf and vim.api.nvim_buf_is_valid(opts.buf) then
         buf = opts.buf
-    else
+      else
         buf = vim.api.nvim_create_buf(false, true)
-    end
+      end
 
-    local config = {
+      local config = {
         relative = "editor",
         width = width,
         height = height,
         row = row,
         col = col,
         style = "minimal",
-        border = "rounded"
-    }
-    vim.api.nvim_set_hl(0, "MyFloatingWindow", { bg = "#1e1e1e", fg = "#ffffff", blend = 10 })
-    local win = vim.api.nvim_open_win(buf, true, config)
-    return { buf = buf, win = win }
-end
+        border = "rounded",
+      }
 
-local toggle_term = function()
-    if not vim.api.nvim_win_is_valid(state.floating.win) then
+      vim.api.nvim_set_hl(0, "MyFloatingWindow", { bg = "#1e1e1e", fg = "#ffffff", blend = 10 })
+      local win = vim.api.nvim_open_win(buf, true, config)
+      return { buf = buf, win = win }
+    end
+
+    local toggle_term = function()
+      if not vim.api.nvim_win_is_valid(state.floating.win) then
         state.floating = create_floating_window { buf = state.floating.buf }
         if vim.bo[state.floating.buf].buftype ~= "terminal" then
-            vim.cmd.terminal()
+          vim.cmd.terminal()
         end
-    else
+        vim.cmd.startinsert()
+      else
         vim.api.nvim_win_hide(state.floating.win)
+      end
     end
-end
 
-vim.api.nvim_create_user_command("FTerm", toggle_term, {})
-vim.keymap.set({ "n", "t" }, "<leader>T", toggle_term)
+    vim.api.nvim_create_user_command("FTerm", toggle_term, {})
+    vim.keymap.set({ "n", "t" }, "<leader>T", toggle_term)
+  end,
+}
