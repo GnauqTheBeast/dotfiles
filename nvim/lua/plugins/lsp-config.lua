@@ -79,10 +79,10 @@ return {
 					typescript = "function",
 					java = "class",
 					lua = "function",
-					go = { "method", "struct", "interface" },
+					go = { "func", "method", "struct", "interface" },
 				}
 				local symbols = symbols_map[filetype] or "function"
-				require("fzf-lua").lsp_document_symbols({ symbols = symbols })
+				require("telescope.builtin").lsp_document_symbols({ symbols = symbols })
 			end, {})
 		end,
 	},
