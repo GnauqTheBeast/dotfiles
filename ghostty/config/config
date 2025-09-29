@@ -1,0 +1,17 @@
+fullscreen = true
+# font-family = "Jetbrains Nerd Font Mono Bold"
+font-size = 10
+background-opacity = 0.90
+background-blur-radius = 90
+
+# Hidden top bar
+# For macos
+# macos-titlebar-proxy-icon = hidden
+# macos-titlebar-style = hidden
+
+# For linux
+window-decoration = false
+
+title = ""
+# cursor-opacity = 0.90 
+# adjust-cursor-thickness = 1
