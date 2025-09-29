@@ -17,6 +17,7 @@ return {
         "accent",
         "catppuccin",
         "rose-pine",
+        "dracula",
       }
       local current_theme_index = 1
       vim.cmd.colorscheme(themes[current_theme_index])
@@ -54,5 +55,10 @@ return {
     config = function()
       require("darcula").setup({})
     end,
+  },
+  {
+    "dracula/vim",
+    name = "dracula",
+    priority = 1300,
   },
 }
